@@ -161,7 +161,7 @@ sudo apt install redis-server
 
 
 
-### The steps to try demo on AWS EC2 Server
+### The steps to try demo on deployed AWS EC2 Server
 
 1. Create amount of user with using bulk creation endpoint. This will generate random users and their data on redis server running on AWS EC2 Server.
 
@@ -175,7 +175,7 @@ http://18.184.175.45:8080/leaderboard
 
 And also you could use other endpoints as well.
 
-### The steps
+### The steps to try on your server using Dockerized Image
 
 1. Dowload the docker image of project [The Docker Image Container on Cloud](https://drive.google.com/file/d/1VTxVqt3RfW3vLse5ygMy5xm7B74n5ROx/view?usp=sharing)
 
@@ -221,23 +221,3 @@ ayciceksamet
 Project Link: [https://github.com/ayciceksamet/leaderboardplatform](https://github.com/ayciceksamet/leaderboardplatform)
 
 
-
-
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=flat-square
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=flat-square
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=flat-square
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=flat-square
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=flat-square
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
