@@ -41,8 +41,8 @@ The leaderboard platform API is designed to create leader board among users to i
   * [API Documentation](#api-documentation)
   * [Prerequisites](#prerequisites)
 * [Usage](#usage)
-  * [Try on deployed AWS EC2 Server](the-steps-to-try-demo-on-deployed-aws-ec2-server)
-  * [Try on your own server using Dockerized Image](the-steps-to-try-on-your-server-using-dockerized-image)
+  * [Try on deployed AWS EC2 Server](#the-steps-to-try-demo-on-deployed-aws-ec2-server)
+  * [Try on your own server using Dockerized Image](#the-steps-to-try-on-your-server-using-dockerized-image)
 * [Contributing](#contributing)
 * [Contact](#contact)
 
