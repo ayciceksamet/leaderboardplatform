@@ -25,11 +25,11 @@ The leaderboard platform API is designed to create leader board among users to i
     <a href="https://github.com/ayciceksamet/leaderboardplatform/blob/master/README.md"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <a href="http://18.184.175.45:8080/leaderboard">View Demo</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="https://github.com/ayciceksamet/leaderboardplatform/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/ayciceksamet/leaderboardplatform/issues">Request Feature</a>
   </p>
 </p>
 
@@ -50,11 +50,8 @@ The leaderboard platform API is designed to create leader board among users to i
 * [Acknowledgements](#acknowledgements)
 
 
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
 
 The API is created to achieve leaderboard ranking among the users to their scores. You can submit new scores the specified user and see the ranking changes.
 
@@ -82,15 +79,40 @@ This is an example of how you may give instructions on setting up your project l
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
+
+The Redis server is running on AWS EC2 server and it is configured to host name in project. You should change this parameter from application.properties if you want to run on antoher server with redis. They are communicating in each other.
+
+The Leader Board API Platform <===> Redis Server
+
+**spring.redis.host = ec2-18-184-175-45.eu-central-1.compute.amazonaws.com**
+
+ <img src="https://github.com/ayciceksamet/leaderboardplatform/blob/master/2.png" alt="Logo-structure" width="400" height="80">
+
+
 * Docker and Redis Server
 ```sh
-npm install npm@latest -g
+sudo apt-get install docker-ce docker-ce-cli containerd.io
 ```
 
-### Installation
+```sh
+sudo apt install redis-server
+```
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+### API Documentation
+
+http://18.184.175.45:8080/swagger-ui.html#/ranking-score-controller
+
+
+
+
+### The steps to try demo on AWS EC2 Server
+
+1. Create user
+
+### The steps
+
+1. Dowload the docker image of project [The Docker Image Container on Cloud](https://drive.google.com/file/d/1VTxVqt3RfW3vLse5ygMy5xm7B74n5ROx/view?usp=sharing)
+2. Upload to server
 ```sh
 git clone https://github.com/your_username_/Project-Name.git
 ```
