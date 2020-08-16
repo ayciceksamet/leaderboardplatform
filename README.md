@@ -11,8 +11,10 @@ The leaderboard platform API is designed to create leader board among users to i
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/ayciceksamet/leaderboardplatform/blob/master/README.md">
     <img src="https://camo.githubusercontent.com/d92c579684f6c4040ba5e1ae91c80fb95aa1ff59/68747470733a2f2f70726f6772616d6d6572667269656e642e636f6d2f696d672f636f6e74656e742f726f627573742d626f6f745f7469746c652e706e67" alt="Logo" width="500" height="150">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/AWS_Simple_Icons_AWS_Cloud.svg" alt="Logo-AWS" width="200" height="150">
+    
   </a>
 
   <h3 align="center">Leader Board Platform API</h3>
@@ -20,7 +22,7 @@ The leaderboard platform API is designed to create leader board among users to i
   <p align="center">
     The API is designed to integrate your application with score ranking among the users
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/ayciceksamet/leaderboardplatform/blob/master/README.md"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
@@ -44,7 +46,6 @@ The leaderboard platform API is designed to create leader board among users to i
 * [Usage](#usage)
 * [Roadmap](#roadmap)
 * [Contributing](#contributing)
-* [License](#license)
 * [Contact](#contact)
 * [Acknowledgements](#acknowledgements)
 
@@ -55,35 +56,33 @@ The leaderboard platform API is designed to create leader board among users to i
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need.
+The API is created to achieve leaderboard ranking among the users to their scores. You can submit new scores the specified user and see the ranking changes.
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should element DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue.
-
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
 
 ### Built With
 This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
-* [Laravel](https://laravel.com)
+* [Spring Boot](https://spring.io/projects/spring-boot)
+* [Redis](https://redis.io/)
+* [Lombok](https://projectlombok.org/)
+* [Swagger](https://swagger.io/)
+* [Amazon EC2](https://aws.amazon.com/tr/ec2/)
 
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+This is an example of how you may give instructions on setting up your project locally and run on AWS EC2 instance.
+
+### The Project Structure
+
+ <img src="https://github.com/ayciceksamet/leaderboardplatform/blob/master/1.PNG" alt="Logo-structure" width="400" height="400">
+
 
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
+* Docker and Redis Server
 ```sh
 npm install npm@latest -g
 ```
