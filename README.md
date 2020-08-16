@@ -2,8 +2,6 @@
 The leaderboard platform API is designed to create leader board among users to its scores and ranked each other.
 
 
-[![Issues][issues-shield]][issues-url]
-
 
 <!-- PROJECT LOGO -->
 <br />
