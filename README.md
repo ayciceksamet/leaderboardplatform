@@ -2,10 +2,7 @@
 The leaderboard platform API is designed to create leader board among users to its scores and ranked each other.
 
 
-
-
 [![Issues][issues-shield]][issues-url]
-
 
 
 <!-- PROJECT LOGO -->
@@ -34,17 +31,18 @@ The leaderboard platform API is designed to create leader board among users to i
 </p>
 
 
-
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
 * [About the Project](#about-the-project)
   * [Built With](#built-with)
 * [Getting Started](#getting-started)
+  * [Project Structure](#the-project-structure)
+  * [API Documentation](#api-documentation)
   * [Prerequisites](#prerequisites)
-  * [Installation](#installation)
 * [Usage](#usage)
-* [Roadmap](#roadmap)
+  * [Try on deployed AWS EC2 Server](the-steps-to-try-demo-on-deployed-aws-ec2-server)
+  * [Try on your own server using Dockerized Image](the-steps-to-try-on-your-server-using-dockerized-image)
 * [Contributing](#contributing)
 * [Contact](#contact)
 
@@ -158,7 +156,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io
 ```sh
 sudo apt install redis-server
 ```
-
+## Usage
 
 
 ### The steps to try demo on deployed AWS EC2 Server
