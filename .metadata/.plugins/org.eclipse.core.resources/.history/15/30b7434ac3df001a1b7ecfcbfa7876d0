@@ -1,0 +1,5 @@
+package com.leaderboard.rankingscoreplatform.service;
+
+public class RankingScoreService {
+
+}

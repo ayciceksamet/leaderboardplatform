@@ -1,0 +1,95 @@
+package com.leaderboard.rankingscoreplatform.controller;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.github.javafaker.Faker;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.leaderboard.rankingscoreplatform.model.Score;
+import com.leaderboard.rankingscoreplatform.model.User;
+import com.leaderboard.rankingscoreplatform.repository.RankingScorePlatformRepository;
+import com.leaderboard.rankingscoreplatform.service.Api;
+import com.leaderboard.rankingscoreplatform.service.RankingScoreService;
+
+import ch.qos.logback.core.db.dialect.HSQLDBDialect;
+import io.netty.handler.codec.json.JsonObjectDecoder;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Pipeline;
+import redis.clients.jedis.Response;
+import redis.clients.jedis.Tuple;
+
+@RestController
+@io.swagger.annotations.Api(value="post", description=" Post Operations Service")
+public class RankingScoreController {
+
+	@Autowired
+	RankingScoreService rankingScoreService;
+	
+	@RequestMapping(value = "/healthcheck", method = RequestMethod.GET)
+	public ResponseEntity<Object> getHealthCheck()
+			throws IOException, InterruptedException {
+		return rankingScoreService.getHealthCheck();
+	}
+	
+	@RequestMapping(value = "/user/create/", method = RequestMethod.POST)
+	public ResponseEntity<Object> addUserToPlatform(@RequestBody User user)
+			throws IOException, InterruptedException {
+		return rankingScoreService.addUser(user);
+	}
+	
+	@RequestMapping(value = "/user/bulkcreate/{user_count}", method = RequestMethod.POST)
+	public ResponseEntity<Object> addBulkUserToPlatform(@PathVariable Integer user_count)
+			throws IOException, InterruptedException {
+		return rankingScoreService.bulkCreateUser(user_count);
+	}
+	
+	@RequestMapping(value = "/user/profile/{user_id}", method = RequestMethod.GET)
+	public Optional<User> retrieveUserFromPlatform(@PathVariable String user_id)
+			throws IOException, InterruptedException {
+		return rankingScoreService.getUser(user_id);
+	}
+	
+	@RequestMapping(value = "/leaderboard", method = RequestMethod.GET)
+	public Set<TypedTuple<Object>> accessLeaderBoard()
+			throws IOException, InterruptedException {
+		return rankingScoreService.getLeaderBoard();
+	}
+	
+	@RequestMapping(value = "/leaderboard/{country_iso_code}", method = RequestMethod.GET)
+	public List<TypedTuple<Object>> accessLeaderBoardByCountryCode(@PathVariable String country_iso_code)
+			throws IOException, InterruptedException {
+		return rankingScoreService.getLeaderBoardByCountryCode(country_iso_code);
+	}
+	
+	@RequestMapping(value = "/score/submit/", method = RequestMethod.POST)
+	public ResponseEntity<String> submitScoreToUser(@RequestBody Score score)
+			throws IOException, InterruptedException {
+		return rankingScoreService.submitScore(score);
+	}
+	
+
+}

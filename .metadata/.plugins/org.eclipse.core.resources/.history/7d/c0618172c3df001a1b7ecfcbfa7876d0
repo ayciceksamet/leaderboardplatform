@@ -1,0 +1,9 @@
+package com.leaderboard.rankingscoreplatform.service;
+
+
+
+public interface RankingScoreService {
+	
+	 public abstract void getHealthCheck();
+
+}

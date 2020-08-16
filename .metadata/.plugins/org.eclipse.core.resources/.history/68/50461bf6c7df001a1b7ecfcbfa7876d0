@@ -1,0 +1,222 @@
+package com.leaderboard.rankingscoreplatform.controller;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.github.javafaker.Faker;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.leaderboard.rankingscoreplatform.model.Score;
+import com.leaderboard.rankingscoreplatform.model.User;
+import com.leaderboard.rankingscoreplatform.repository.UserRepository;
+import com.leaderboard.rankingscoreplatform.service.RankingScoreService;
+
+import ch.qos.logback.core.db.dialect.HSQLDBDialect;
+import io.netty.handler.codec.json.JsonObjectDecoder;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Pipeline;
+import redis.clients.jedis.Response;
+import redis.clients.jedis.Tuple;
+
+@RestController
+public class RankingScoreController {
+
+	
+	@Autowired
+	RankingScoreService rankingScoreService;
+	
+	@RequestMapping(value = "/healthcheck", method = RequestMethod.GET)
+	public ResponseEntity<Object> getHealthCheck()
+			throws IOException, InterruptedException {
+		return rankingScoreService.getHealthCheck();
+	}
+	
+	@RequestMapping(value = "/user/create/", method = RequestMethod.POST)
+	public ResponseEntity<Object> addUserToPlatform(@RequestBody User user)
+			throws IOException, InterruptedException {
+		return rankingScoreService.addUser(user);
+	}
+	
+	@RequestMapping(value = "/user/bulkcreate/{user_count}", method = RequestMethod.POST)
+	public ResponseEntity<Object> addBulkUserToPlatform(@PathVariable Integer user_count)
+			throws IOException, InterruptedException {
+		return rankingScoreService.bulkCreateUser(user_count);
+	}
+	
+	
+	
+	
+	
+	
+
+
+	@PostMapping("/user/create/")
+	public String addUser(@RequestBody User user) {
+		UUID uuid = UUID.randomUUID();
+
+		User userCreated = new User(uuid.toString(), user.getDisplayName(), user.getPoints(), user.getRank(),
+				user.getCountry());
+		userRepository.save(userCreated);
+		template.opsForZSet().add(KEYSCORE, userCreated, user.getPoints());
+		return "200 OK";
+	}
+
+	@PostMapping("/user/bulkcreate/{user_count}")
+	public String bulkCreateUser(@PathVariable Integer user_count) {
+
+		int MAX_VALUE = 1000000;
+
+		List<String> countryNames = new ArrayList<>();
+
+		countryNames.add("tr");
+		countryNames.add("us");
+		countryNames.add("fr");
+		countryNames.add("sw");
+
+		CountDownLatch latch = new CountDownLatch(user_count.intValue());
+
+		ExecutorService threadExecutor = Executors.newFixedThreadPool(50);
+
+		for (int i = 0; i < user_count.intValue(); i++) {
+
+			threadExecutor.execute(new Runnable() {
+
+				@Override
+				public void run() {
+
+					UUID uuid = UUID.randomUUID();
+
+					Faker faker = new Faker();
+
+					Long point = Integer.toUnsignedLong((new Random().nextInt(MAX_VALUE) * 5));
+
+					User userCreated = new User(uuid.toString(), faker.name().firstName(), point,
+							Integer.toUnsignedLong(1), countryNames.get(new Random().nextInt(countryNames.size())));
+
+					userRepository.save(userCreated);
+
+					template.opsForZSet().add(KEYSCORE, userCreated, point);
+
+					latch.countDown();
+
+				}
+			});
+
+		}
+
+		try {
+			latch.await();
+		} catch (InterruptedException E) {
+			// handle
+		}
+
+		return "200 OK";
+	}
+
+	@GetMapping("/user/profile/{user_id}")
+	public Optional<User> getUser(@PathVariable String user_id) {
+
+		Optional<User> userCreated = userRepository.findById(user_id);
+
+		userCreated.get().setRank(template.opsForZSet().reverseRank(KEYSCORE, userCreated.get()) + 1);
+
+		return userCreated;
+	}
+
+	@GetMapping("/leaderboard")
+	public Set<TypedTuple<Object>> getLeaderBoard() {
+
+		Set<TypedTuple<Object>> userCreated = template.opsForZSet().reverseRangeWithScores(KEYSCORE, 0,
+				userRepository.count());
+		
+		CountDownLatch latch = new CountDownLatch((int) userRepository.count() - 1);
+		
+
+		ExecutorService threadExecutor = Executors.newFixedThreadPool(100);
+
+		for (TypedTuple<Object> userIT : userCreated) {
+
+			threadExecutor.execute(new Runnable() {
+
+				@Override
+				public void run() {
+
+					User user = (User) userIT.getValue();
+					
+					user.setRank(template.opsForZSet().reverseRank(KEYSCORE, user) + 1);
+
+					latch.countDown();
+					
+				}
+			});
+			
+		}
+		
+		try {
+			latch.await();
+		} catch (InterruptedException E) {
+			// handle
+		}
+
+		return userCreated;
+	}
+
+	@GetMapping("/leaderboard/{country_iso_code}")
+	public List<TypedTuple<Object>> getLeaderBoardByCountryCode(@PathVariable String country_iso_code) {
+
+		Set<TypedTuple<Object>> userCreated = template.opsForZSet().reverseRangeWithScores(KEYSCORE, 0,
+				userRepository.count());
+
+		List<TypedTuple<Object>> userList = userCreated.stream()
+				.filter(userOne -> ((User) userOne.getValue()).getCountry().equalsIgnoreCase(country_iso_code))
+				.collect(Collectors.toList());
+
+		userList.parallelStream().forEach(user -> ((User) user.getValue())
+				.setRank(template.opsForZSet().reverseRank(KEYSCORE, (User) user.getValue()) + 1));
+		
+		
+
+		return userList;
+	}
+
+	@PostMapping("/score/submit/")
+	public String submitScore(@RequestBody Score score) {
+
+		Optional<User> userFetched = userRepository.findById(score.getUser_id());
+
+		Long newScore = userFetched.get().getPoints() + score.getScore_worth();
+
+		User userCreated = new User(score.getUser_id(), userFetched.get().getDisplayName(), newScore,
+				userFetched.get().getRank(), userFetched.get().getCountry());
+
+		template.opsForZSet().add(KEYSCORE, userCreated, newScore);
+
+		userRepository.save(userCreated);
+
+		return "200 OK";
+	}
+
+}

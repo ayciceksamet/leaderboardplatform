@@ -1,0 +1,8 @@
+1597583727264	Rename package 'com.leaderboard.rankingscore'
+1597583748144	Rename package 'com.leaderboard.rankingscore.service'
+1597583770299	Rename package 'com.leaderboard.rankingscore.repository'
+1597583786377	Rename package 'com.leaderboard.rankingscore.model'
+1597583801192	Rename package 'com.leaderboard.rankingscore.controller'
+1597584194945	Rename type 'UserController'
+1597586731971	Rename type 'UserRepository'
+1597586781480	Delete element

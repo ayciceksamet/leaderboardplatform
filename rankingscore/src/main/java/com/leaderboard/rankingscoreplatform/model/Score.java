@@ -1,0 +1,24 @@
+package com.leaderboard.rankingscoreplatform.model;
+
+import java.io.Serializable;
+import java.util.UUID;
+
+import org.springframework.data.redis.core.RedisHash;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
+
+@AllArgsConstructor
+@Getter @Setter
+@RedisHash("Score")
+public class Score implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
+	private String user_id;
+	private Long   score_worth;
+	private String timestamp;
+
+}
