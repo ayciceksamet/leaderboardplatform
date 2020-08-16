@@ -47,7 +47,6 @@ The leaderboard platform API is designed to create leader board among users to i
 * [Roadmap](#roadmap)
 * [Contributing](#contributing)
 * [Contact](#contact)
-* [Acknowledgements](#acknowledgements)
 
 
 <!-- ABOUT THE PROJECT -->
@@ -76,11 +75,73 @@ This is an example of how you may give instructions on setting up your project l
  <img src="https://github.com/ayciceksamet/leaderboardplatform/blob/master/1.PNG" alt="Logo-structure" width="400" height="400">
 
 
+### API Documentation
+
+http://18.184.175.45:8080/swagger-ui.html#/ranking-score-controller
+
+<img src="https://github.com/ayciceksamet/leaderboardplatform/blob/master/3.PNG" alt="Logo-structure" width="1200" height="400">
+
+
+To check the system is working 
+
+(GET)
+http://18.184.175.45:8080/healthcheck 
+
+
+To submit bulk user to platform with random names, scores and countries
+
+(POST)
+http://18.184.175.45:8080/user/bulkcreate/50
+
+
+To retrieve leaderboard from platform
+
+(GET)
+http://18.184.175.45:8080/leaderboard
+
+
+To add new user to platform
+
+(POST)
+http://18.184.175.45:8080/user/create/
+
+```
+{
+"displayName": "BABO",
+"points" : 1500,
+"rank":1,
+"country": "tr"
+}
+
+```
+
+To add score to specific user 
+
+(POST)
+http://18.184.175.45:8080/score/submit/
+```
+{
+"score_worth": "550000000000",
+"user_id" : "c1c64f48-e7b0-4f5d-8bff-573eebb3bdf5"
+}
+```
+
+To retrieve specific country iso code with leaderboard
+
+(GET) http://18.184.175.45:8080/leaderboard/tr
+
+To retrieve specific user with user id
+
+(GET) http://18.184.175.45:8080/user/profile/c1c64f48-e7b0-4f5d-8bff-573eebb3bdf5
+
+
+
+
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
 
-The Redis server is running on AWS EC2 server and it is configured to host name in project. You should change this parameter from application.properties if you want to run on antoher server with redis. They are communicating in each other.
+The Redis server is running on AWS EC2 server and it is configured to host name in project. You should change this parameter from application.properties if you want to run on antoher server with redis. They are communicating in each other. You should deploy the docker image on your server and the redis server will be served on specified AWS EC2 server.
 
 The Leader Board API Platform <===> Redis Server
 
@@ -98,48 +159,42 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io
 sudo apt install redis-server
 ```
 
-### API Documentation
-
-http://18.184.175.45:8080/swagger-ui.html#/ranking-score-controller
-
-
 
 
 ### The steps to try demo on AWS EC2 Server
 
-1. Create user
+1. Create amount of user with using bulk creation endpoint. This will generate random users and their data on redis server running on AWS EC2 Server.
+
+(POST)
+http://18.184.175.45:8080/user/bulkcreate/50
+
+2. You can access the leaderboard using this endpoint.
+
+(GET)
+http://18.184.175.45:8080/leaderboard
+
+And also you could use other endpoints as well.
 
 ### The steps
 
 1. Dowload the docker image of project [The Docker Image Container on Cloud](https://drive.google.com/file/d/1VTxVqt3RfW3vLse5ygMy5xm7B74n5ROx/view?usp=sharing)
-2. Upload to server
+
+2. Upload to your server the docker image
+
+3. Load the image on your server
+
 ```sh
-git clone https://github.com/your_username_/Project-Name.git
+docker load -i rankingplatformdockerimage
 ```
-3. Install NPM packages
+3. Serve the image using this command on 8080 port
 ```sh
-npm install
-```
-4. Enter your API in `config.js`
-```JS
-const API_KEY = 'ENTER YOUR API';
+docker run -t -d -p 8080:8080 rankingplatformdockerimage
 ```
 
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
+4. Please check with health check endpoint on your server.
+```sh
+http://18.184.175.45:8080/healthcheck 
+```
 
 
 
@@ -156,35 +211,16 @@ Contributions are what make the open source community such an amazing place to b
 
 
 
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
 
 
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+ayciceksamet 
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Project Link: [https://github.com/ayciceksamet/leaderboardplatform](https://github.com/ayciceksamet/leaderboardplatform)
 
 
-
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Img Shields](https://shields.io)
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Pages](https://pages.github.com)
-* [Animate.css](https://daneden.github.io/animate.css)
-* [Loaders.css](https://connoratherton.com/loaders)
-* [Slick Carousel](https://kenwheeler.github.io/slick)
-* [Smooth Scroll](https://github.com/cferdinandi/smooth-scroll)
-* [Sticky Kit](http://leafo.net/sticky-kit)
-* [JVectorMap](http://jvectormap.com)
-* [Font Awesome](https://fontawesome.com)
 
 
 
